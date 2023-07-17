@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import io.github.rmhavatar.weatherforecast.data.db.dao.SearchDao;
 import io.github.rmhavatar.weatherforecast.data.db.db.AppDatabase;
 import io.github.rmhavatar.weatherforecast.data.db.entity.SearchEntity;
@@ -11,16 +13,15 @@ import io.github.rmhavatar.weatherforecast.data.db.entity.SearchEntity;
 public class SearchHistoricRepository implements ISearchHistoricRepository {
     private final SearchDao searchDao;
 
+    @Inject
+
     public SearchHistoricRepository(AppDatabase database) {
         searchDao = database.searchDao();
     }
 
     @Override
     public void insert(SearchEntity searchEntity) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            searchDao.insert(searchEntity);
-        });
-
+        AppDatabase.databaseWriteExecutor.execute(() -> searchDao.insert(searchEntity));
     }
 
     @Override
