@@ -57,7 +57,7 @@ fun Body(
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         when (weatherDataResponseState) {
             is ResponseState.Error, null -> {
-                EmptyState(Modifier.weight(1f))
+                LocalEmptyState(Modifier.weight(1f))
                 if (weatherDataResponseState != null && weatherDataResponseState.message?.isNotBlank() == true) {
                     onShowMessage(weatherDataResponseState.message)
                 }
@@ -69,7 +69,7 @@ fun Body(
 
             is ResponseState.Success -> {
                 if (weatherDataResponseState.data == null) {
-                    EmptyState(Modifier.weight(1f))
+                    LocalEmptyState(Modifier.weight(1f))
                 } else {
                     when (configuration.orientation) {
                         Configuration.ORIENTATION_LANDSCAPE -> {
@@ -213,6 +213,15 @@ fun BodyHorizontal(data: WeatherResponseData) {
             )
         }
     }
+}
+
+@Composable
+fun LocalEmptyState(modifier: Modifier = Modifier) {
+    EmptyState(
+        text = stringResource(R.string.search_your_city),
+        icon = R.drawable.ic_undraw_location_search_re_ttoj,
+        modifier = modifier
+    )
 }
 
 @Composable
