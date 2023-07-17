@@ -13,6 +13,9 @@ import javax.inject.Inject
 const val WEATHER_FORECAST_DATASTORE = "weather_forecast_datastore"
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = WEATHER_FORECAST_DATASTORE)
 
+/***
+ * Manager from datastore file
+ */
 class DataStoreManager @Inject constructor(private val context: Context) {
 
     companion object {
@@ -20,13 +23,13 @@ class DataStoreManager @Inject constructor(private val context: Context) {
             stringPreferencesKey("LAST_SEARCHED_CITY_KEY")
     }
 
-    suspend fun saveLastGeneratedTestPollIdsToDataStore(city: String) {
+    suspend fun saveLastSearchedCityNameToDataStore(city: String) {
         context.dataStore.edit { setting ->
             setting[LAST_SEARCHED_CITY_KEY] = city
         }
     }
 
-    fun getLastSearchedCityName() = context.dataStore.data.map { preferences ->
+    fun getLastSearchedCityNameFromDataStore() = context.dataStore.data.map { preferences ->
         preferences[LAST_SEARCHED_CITY_KEY]
     }
 }

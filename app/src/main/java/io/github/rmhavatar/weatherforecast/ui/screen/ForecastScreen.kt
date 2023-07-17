@@ -51,6 +51,8 @@ fun ForecastScreen(hostState: SnackbarHostState, viewModel: ForecastViewModel = 
             android.Manifest.permission.ACCESS_FINE_LOCATION
         )
     )
+
+    //Used to fetch data once when app is launched
     var isFirstTime by rememberSaveable {
         mutableStateOf(true)
     }
@@ -71,6 +73,7 @@ fun ForecastScreen(hostState: SnackbarHostState, viewModel: ForecastViewModel = 
         )
     }
 
+    // Receiver to know gps status
     val gpsReceiver = GpsReceiver(object : GpsReceiver.LocationCallBack {
         override fun turnedOn() {
             gpsIcon = R.drawable.baseline_location_on_24
@@ -133,12 +136,20 @@ fun ForecastScreen(hostState: SnackbarHostState, viewModel: ForecastViewModel = 
             }
         }
     }
+
+    // Attached to compose lifecycle because when compose leaves the composition its lifecycleOwner
+    // is changed and this DisposableEffect when its key is changed calls again its effect but first
+    // it must dispose its current effect. Therefore when a compose leaves the composition is called
+    // onDispose in DisposableEffect
     DisposableEffect(key1 = lifecycleOwner) {
         onDispose {
+            // It needed because it should not be a receiver that is not listen to any f
             context.unregisterReceiver(gpsReceiver)
         }
     }
 
+    // If app is launched for first time, fetch weather data from location or search last city.
+    // This allows if there is a configuration change the data is not fetched again
     if (isFirstTime) {
         isFirstTime = false
         if (connectivityProvider.getNetworkState().hasInternet()) {
@@ -148,8 +159,11 @@ fun ForecastScreen(hostState: SnackbarHostState, viewModel: ForecastViewModel = 
                 )
             )
         }
-    } else if (locationPermissions.allPermissionsGranted && locationPermissions.allPermissionsGranted != lastAllPermissionsGranted) {
+    }
+    // If location permission is granted is not first time app is launched, fetch weather data from location
+    else if (locationPermissions.allPermissionsGranted && locationPermissions.allPermissionsGranted != lastAllPermissionsGranted) {
         if (!isLocationEnabled(locationManager)) {
+            // Open change gps setting activity
             context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
         } else if (connectivityProvider.getNetworkState().hasInternet()) {
             lastAllPermissionsGranted = locationPermissions.allPermissionsGranted

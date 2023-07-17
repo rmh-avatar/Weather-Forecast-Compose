@@ -22,6 +22,10 @@ class ForecastViewModel @Inject constructor(
         MutableStateFlow(null)
     val weatherDataFlow = _weatherDataFlow.asStateFlow()
 
+    /***
+     * Fetch weather data from current location if hasLocationPermission is true
+     * or from searched last city if hasLocationPermission is false
+     */
     fun fetchWeatherData(hasLocationPermission: Boolean) {
         viewModelScope.launch {
             try {
@@ -29,12 +33,12 @@ class ForecastViewModel @Inject constructor(
                 if (hasLocationPermission) {
                     forecastRepository.fetchWeatherDataByCoordinates().collect {
                         if (it.data?.cityName?.isNotBlank() == true) {
-                            dataStoreManager.saveLastGeneratedTestPollIdsToDataStore(it.data.cityName)
+                            dataStoreManager.saveLastSearchedCityNameToDataStore(it.data.cityName)
                         }
                         _weatherDataFlow.value = it
                     }
                 } else {
-                    dataStoreManager.getLastSearchedCityName().collect { cityName ->
+                    dataStoreManager.getLastSearchedCityNameFromDataStore().collect { cityName ->
                         if (cityName.isNullOrBlank()) {
                             _weatherDataFlow.value = null
                         } else {
@@ -55,7 +59,7 @@ class ForecastViewModel @Inject constructor(
             try {
                 _weatherDataFlow.value = ResponseState.Loading()
                 forecastRepository.fetchWeatherDataByCityName(cityName).collect {
-                    dataStoreManager.saveLastGeneratedTestPollIdsToDataStore(cityName)
+                    dataStoreManager.saveLastSearchedCityNameToDataStore(cityName)
                     _weatherDataFlow.value = it
                 }
             } catch (e: Exception) {
@@ -70,7 +74,7 @@ class ForecastViewModel @Inject constructor(
                 _weatherDataFlow.value = ResponseState.Loading()
                 forecastRepository.fetchWeatherDataByCoordinates().collect {
                     if (it.data?.cityName?.isNotBlank() == true) {
-                        dataStoreManager.saveLastGeneratedTestPollIdsToDataStore(it.data.cityName)
+                        dataStoreManager.saveLastSearchedCityNameToDataStore(it.data.cityName)
                     }
                     _weatherDataFlow.value = it
                 }

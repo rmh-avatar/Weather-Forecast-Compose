@@ -7,6 +7,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
+/***
+ * Generate any client to use with Retrofit
+ */
 class ServiceGenerator {
     private var builder: Retrofit.Builder
 

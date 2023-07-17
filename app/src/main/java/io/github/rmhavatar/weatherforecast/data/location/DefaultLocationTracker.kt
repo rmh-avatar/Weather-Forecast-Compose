@@ -10,6 +10,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/***
+ * Get current location
+ */
 class DefaultLocationTracker(
     private val fusedLocationProviderClient: FusedLocationProviderClient,
     private val application: Application
