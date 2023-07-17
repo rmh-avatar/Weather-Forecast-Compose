@@ -84,6 +84,8 @@ dependencies {
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.6.0")
 
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.3.1")
     testImplementation("junit:junit:4.13.2")
