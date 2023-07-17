@@ -18,6 +18,6 @@ interface ServiceClient {
         @Query("lon") lon: Double,
         @Query("lat") lat: Double,
         @Query("appid") apiId: String = WebService.API_ID,
-        @Query("units") units: String = "metric"
+        @Query("units") units: String = "imperial"
     ): Call<WeatherResponseData>
 }

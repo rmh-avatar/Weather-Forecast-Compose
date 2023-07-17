@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,9 +24,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import io.github.rmhavatar.weatherforecast.data.api.dto.WeatherResponseData
 import io.github.rmhavatar.weatherforecast.data.util.ResponseState
@@ -97,12 +103,7 @@ fun Body(
                                     modifier = Modifier.fillMaxWidth()
                                 )
                             }
-                            Text(
-                                text = temperature.temperature.toInt().toString(),
-                                style = MaterialTheme.typography.headlineLarge,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center,
-                            )
+                            TemperatureText(temperature = temperature.temperature.toInt())
                             Spacer(modifier = Modifier.height(32.dp))
                             WeatherCondition(
                                 humidity = temperature.humidity.toString(),
@@ -199,4 +200,28 @@ fun shimmerBrush(targetValue: Float = 1000f): Brush {
         start = Offset.Zero,
         end = Offset(x = translateAnimation.value, y = translateAnimation.value)
     )
+}
+
+@Composable
+fun TemperatureText(temperature: Int) {
+    Row {
+        Text(
+            text = buildAnnotatedString {
+                append(temperature.toString())
+                withStyle(
+                    SpanStyle(
+                        baselineShift = BaselineShift.Superscript,
+                    )
+                ) {
+                    append("°")
+                }
+                append(" ")
+                append("F")
+            },
+            style = MaterialTheme.typography.bodyLarge,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+        )
+    }
 }

@@ -5,9 +5,8 @@ import io.github.rmhavatar.weatherforecast.data.api.dto.WeatherResponseData
 import io.github.rmhavatar.weatherforecast.data.util.ResponseState
 import retrofit2.Response
 import java.io.IOException
-import javax.inject.Inject
 
-class WebService @Inject constructor() : IWebService {
+class WebService() : IWebService {
     private val serviceClient: ServiceClient by lazy {
         ServiceGenerator().createService(
             ServiceClient::class.java
