@@ -97,6 +97,7 @@ fun ForecastScreen(hostState: SnackbarHostState, viewModel: ForecastViewModel = 
                     viewModel.fetchWeatherDataByCityName(searchText)
                 } else {
                     showNoInternetMessage(
+                        context = context,
                         coroutineScope = coroutineScope,
                         hostState = hostState
                     )
@@ -120,7 +121,11 @@ fun ForecastScreen(hostState: SnackbarHostState, viewModel: ForecastViewModel = 
                     } else if (connectivityProvider.getNetworkState().hasInternet()) {
                         viewModel.fetchWeatherDataByCoordinates()
                     } else {
-                        showNoInternetMessage(coroutineScope, hostState)
+                        showNoInternetMessage(
+                            context = context,
+                            coroutineScope = coroutineScope,
+                            hostState = hostState
+                        )
                     }
                 } else {
                     locationPermissions.launchMultiplePermissionRequest()
@@ -137,7 +142,11 @@ fun ForecastScreen(hostState: SnackbarHostState, viewModel: ForecastViewModel = 
     if (isFirstTime) {
         isFirstTime = false
         if (connectivityProvider.getNetworkState().hasInternet()) {
-            viewModel.fetchWeatherData(locationPermissions.allPermissionsGranted)
+            viewModel.fetchWeatherData(
+                locationPermissions.allPermissionsGranted && isLocationEnabled(
+                    locationManager
+                )
+            )
         }
     } else if (locationPermissions.allPermissionsGranted && locationPermissions.allPermissionsGranted != lastAllPermissionsGranted) {
         if (!isLocationEnabled(locationManager)) {
@@ -146,7 +155,11 @@ fun ForecastScreen(hostState: SnackbarHostState, viewModel: ForecastViewModel = 
             lastAllPermissionsGranted = locationPermissions.allPermissionsGranted
             viewModel.fetchWeatherDataByCoordinates()
         } else {
-            showNoInternetMessage(coroutineScope, hostState)
+            showNoInternetMessage(
+                context = context,
+                coroutineScope = coroutineScope,
+                hostState = hostState
+            )
         }
     }
 }
@@ -161,6 +174,13 @@ private fun showMessage(
     }
 }
 
-private fun showNoInternetMessage(coroutineScope: CoroutineScope, hostState: SnackbarHostState) {
-    showMessage(coroutineScope, hostState, "No internet. Check your network connexion")
+private fun showNoInternetMessage(
+    context: Context,
+    coroutineScope: CoroutineScope,
+    hostState: SnackbarHostState
+) {
+    showMessage(
+        coroutineScope, hostState,
+        context.getString(R.string.no_internet_check_your_network_connexion)
+    )
 }
