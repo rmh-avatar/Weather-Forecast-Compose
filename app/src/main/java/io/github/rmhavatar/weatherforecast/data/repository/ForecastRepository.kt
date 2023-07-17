@@ -13,14 +13,14 @@ import javax.inject.Inject
 class ForecastRepository @Inject constructor(
     private val webService: IWebService,
     private val locationTracker: LocationTracker
-) {
-    fun fetchWeatherDataByCityName(cityName: String): Flow<ResponseState<WeatherResponseData>> {
+) : IForecastRepository {
+    override fun fetchWeatherDataByCityName(cityName: String): Flow<ResponseState<WeatherResponseData>> {
         return flow {
             emit(webService.fetchWeatherDataByCityName(cityName))
         }.flowOn(Dispatchers.IO)
     }
 
-    fun fetchWeatherDataByCoordinates(): Flow<ResponseState<WeatherResponseData>> {
+    override fun fetchWeatherDataByCoordinates(): Flow<ResponseState<WeatherResponseData>> {
         return flow {
             val location = locationTracker.getCurrentLocation()
             if (location == null) {

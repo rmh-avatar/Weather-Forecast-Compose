@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.rmhavatar.weatherforecast.data.api.dto.WeatherResponseData
 import io.github.rmhavatar.weatherforecast.data.db.entity.SearchEntity
 import io.github.rmhavatar.weatherforecast.data.prefDataStore.DataStoreManager
-import io.github.rmhavatar.weatherforecast.data.repository.ForecastRepository
+import io.github.rmhavatar.weatherforecast.data.repository.IForecastRepository
 import io.github.rmhavatar.weatherforecast.data.repository.ISearchHistoricRepository
 import io.github.rmhavatar.weatherforecast.data.util.ResponseState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ForecastViewModel @Inject constructor(
-    private val forecastRepository: ForecastRepository,
+    private val forecastRepository: IForecastRepository,
     private val searchHistoricRepository: ISearchHistoricRepository,
     private val dataStoreManager: DataStoreManager
 ) :

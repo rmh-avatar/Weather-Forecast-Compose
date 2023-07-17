@@ -14,6 +14,7 @@ import io.github.rmhavatar.weatherforecast.data.location.DefaultLocationTracker
 import io.github.rmhavatar.weatherforecast.data.location.LocationTracker
 import io.github.rmhavatar.weatherforecast.data.prefDataStore.DataStoreManager
 import io.github.rmhavatar.weatherforecast.data.repository.ForecastRepository
+import io.github.rmhavatar.weatherforecast.data.repository.IForecastRepository
 import io.github.rmhavatar.weatherforecast.data.repository.ISearchHistoricRepository
 import io.github.rmhavatar.weatherforecast.data.repository.SearchHistoricRepository
 import javax.inject.Singleton
@@ -55,7 +56,7 @@ object AppModule {
     fun providesForecastRepository(
         webService: IWebService,
         locationTracker: LocationTracker
-    ): ForecastRepository = ForecastRepository(webService, locationTracker)
+    ): IForecastRepository = ForecastRepository(webService, locationTracker)
 
     @Provides
     @Singleton
