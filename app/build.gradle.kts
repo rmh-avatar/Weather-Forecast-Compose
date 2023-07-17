@@ -63,7 +63,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.1.1")
 
-    //hilt
+    // Hilt
     val hiltVersion = "2.45"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
@@ -74,7 +74,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi:$moshiVersion")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 
-    //retrofit
+    // Retrofit
     val retrofitVersion = "2.9.0"
     implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
@@ -94,6 +94,11 @@ dependencies {
 
     // Permissions
     implementation("com.google.accompanist:accompanist-permissions:0.30.1")
+
+    // Rooms
+    val roomVersion = "2.5.2"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.3.1")
     testImplementation("junit:junit:4.13.2")
