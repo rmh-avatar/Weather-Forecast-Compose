@@ -16,5 +16,8 @@ public interface SearchDao {
     void insert(SearchEntity searchEntity);
 
     @Query("select * from searches order by date desc")
-    LiveData<List<SearchEntity>> getAllSearch();
+    LiveData<List<SearchEntity>> getAllSearchLiveData();
+
+    @Query("select * from searches order by date desc")
+    List<SearchEntity> getAllSearch();
 }

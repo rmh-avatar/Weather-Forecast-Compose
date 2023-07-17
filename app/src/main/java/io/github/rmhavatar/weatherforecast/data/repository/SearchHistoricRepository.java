@@ -26,6 +26,6 @@ public class SearchHistoricRepository implements ISearchHistoricRepository {
 
     @Override
     public LiveData<List<SearchEntity>> getAllSearch() {
-        return searchDao.getAllSearch();
+        return searchDao.getAllSearchLiveData();
     }
 }
