@@ -6,7 +6,7 @@ import android.content.Intent
 import android.location.LocationManager
 
 /**
- * Allow know when gps phone change the status
+ * Receiver to know when gps phone change the status
  */
 class GpsReceiver(private val locationCallBack: LocationCallBack) : BroadcastReceiver() {
     interface LocationCallBack {
