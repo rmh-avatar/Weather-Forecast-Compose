@@ -13,4 +13,6 @@
     <string name="wind_speed_measure">%1$s mph</string>
     <string name="humidity_measure">%1$s %%</string>
     <string name="pressure_measure">%1$s hPa</string>
+    <string name="historical">Historical</string>
+    <string name="no_historical">No historical</string>
 </resources>

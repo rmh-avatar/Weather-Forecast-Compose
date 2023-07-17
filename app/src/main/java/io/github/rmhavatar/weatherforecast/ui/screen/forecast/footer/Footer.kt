@@ -1,4 +1,4 @@
-package io.github.rmhavatar.weatherforecast.ui.screen.footer
+package io.github.rmhavatar.weatherforecast.ui.screen.forecast.footer
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
