@@ -161,7 +161,9 @@ fun ForecastScreen(
     }
 
     if (searchTextFromHistorical?.isNotBlank() == true) {
-        viewModel.fetchWeatherDataByCityName(searchTextFromHistorical)
+        if (connectivityProvider.getNetworkState().hasInternet()) {
+            viewModel.fetchWeatherDataByCityName(searchTextFromHistorical)
+        }
         return
     }
 

@@ -81,7 +81,7 @@ fun SearchBar(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(
             onSearch = {
-                onValueChange(searchText)
+                onValueChange(searchText.trim())
                 keyboardController?.hide()
             }
         ),
