@@ -28,6 +28,9 @@ class ForecastViewModel @Inject constructor(
                 _weatherDataFlow.value = ResponseState.Loading()
                 if (hasLocationPermission) {
                     forecastRepository.fetchWeatherDataByCoordinates().collect {
+                        if (it.data?.cityName?.isNotBlank() == true) {
+                            dataStoreManager.saveLastGeneratedTestPollIdsToDataStore(it.data.cityName)
+                        }
                         _weatherDataFlow.value = it
                     }
                 } else {
@@ -66,6 +69,9 @@ class ForecastViewModel @Inject constructor(
             try {
                 _weatherDataFlow.value = ResponseState.Loading()
                 forecastRepository.fetchWeatherDataByCoordinates().collect {
+                    if (it.data?.cityName?.isNotBlank() == true) {
+                        dataStoreManager.saveLastGeneratedTestPollIdsToDataStore(it.data.cityName)
+                    }
                     _weatherDataFlow.value = it
                 }
             } catch (e: Exception) {
