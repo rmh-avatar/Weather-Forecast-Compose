@@ -12,18 +12,18 @@ import java.util.Date;
 @Entity(tableName = "searches")
 public class SearchEntity {
     @PrimaryKey(autoGenerate = true)
-    private final Long id;
+    private final Long searchId;
     private final String cityName;
     private final Date date;
 
-    public SearchEntity(@NonNull Long id, @NonNull String cityName, @NonNull Date date) {
-        this.id = id;
+    public SearchEntity(@NonNull Long searchId, @NonNull String cityName, @NonNull Date date) {
+        this.searchId = searchId;
         this.cityName = cityName;
         this.date = date;
     }
 
-    public Long getId() {
-        return id;
+    public Long getSearchId() {
+        return searchId;
     }
 
     public String getCityName() {

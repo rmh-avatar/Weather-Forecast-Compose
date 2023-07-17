@@ -39,7 +39,7 @@ class ForecastViewModel @Inject constructor(
                         if (it.data?.cityName?.isNotBlank() == true) {
                             searchHistoricRepository.insert(
                                 SearchEntity(
-                                    0,
+                                    it.data.cityName.hashCode().toLong(),
                                     it.data.cityName,
                                     Date()
                                 )
@@ -70,7 +70,13 @@ class ForecastViewModel @Inject constructor(
             try {
                 _weatherDataFlow.value = ResponseState.Loading()
                 forecastRepository.fetchWeatherDataByCityName(cityName).collect {
-                    searchHistoricRepository.insert(SearchEntity(0, cityName, Date()))
+                    searchHistoricRepository.insert(
+                        SearchEntity(
+                            cityName.hashCode().toLong(),
+                            cityName,
+                            Date()
+                        )
+                    )
                     dataStoreManager.saveLastSearchedCityNameToDataStore(cityName)
                     _weatherDataFlow.value = it
                 }
@@ -86,7 +92,11 @@ class ForecastViewModel @Inject constructor(
                 _weatherDataFlow.value = ResponseState.Loading()
                 forecastRepository.fetchWeatherDataByCoordinates().collect {
                     if (it.data?.cityName?.isNotBlank() == true) {
-                        searchHistoricRepository.insert(SearchEntity(0, it.data.cityName, Date()))
+                        searchHistoricRepository.insert(
+                            SearchEntity(
+                                it.data.cityName.hashCode().toLong(), it.data.cityName, Date()
+                            )
+                        )
                         dataStoreManager.saveLastSearchedCityNameToDataStore(it.data.cityName)
                     }
                     _weatherDataFlow.value = it

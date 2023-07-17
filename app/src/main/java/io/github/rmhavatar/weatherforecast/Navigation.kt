@@ -21,8 +21,15 @@ fun WeatherForecastNavHost(
         startDestination = Screen.Forecast.route,
         modifier = modifier
     ) {
-        composable(Screen.Forecast.route) {
-            ForecastScreen(navController, hostState = hostState)
+        composable(Screen.Forecast.route) { backStackEntry ->
+            val searchText: String? =
+                backStackEntry.savedStateHandle[SearchScreen.CLICKED_SEARCH_TEXT_KEY]
+            ForecastScreen(
+                navController,
+                hostState = hostState,
+                searchTextFromHistorical = searchText
+            )
+            backStackEntry.savedStateHandle.remove<String>(SearchScreen.CLICKED_SEARCH_TEXT_KEY)
         }
         composable(Screen.Search.route) {
             SearchScreen(navController)

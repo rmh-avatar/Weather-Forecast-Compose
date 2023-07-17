@@ -66,6 +66,7 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = hilt
                                 SearchScreen.CLICKED_SEARCH_TEXT_KEY,
                                 item.cityName
                             )
+                            navController.popBackStack()
                         })
                         Divider()
                     }

@@ -45,7 +45,8 @@ import kotlinx.coroutines.launch
 fun ForecastScreen(
     navController: NavController,
     hostState: SnackbarHostState,
-    viewModel: ForecastViewModel = hiltViewModel()
+    viewModel: ForecastViewModel = hiltViewModel(),
+    searchTextFromHistorical: String? = null
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -159,6 +160,11 @@ fun ForecastScreen(
         }
     }
 
+    if (searchTextFromHistorical?.isNotBlank() == true) {
+        viewModel.fetchWeatherDataByCityName(searchTextFromHistorical)
+        return
+    }
+
     // If app is launched for first time, fetch weather data from location or search last city.
     // This allows if there is a configuration change the data is not fetched again
     if (isFirstTime) {
@@ -170,9 +176,11 @@ fun ForecastScreen(
                 )
             )
         }
+        return
     }
+
     // If location permission is granted is not first time app is launched, fetch weather data from location
-    else if (locationPermissions.allPermissionsGranted && locationPermissions.allPermissionsGranted != lastAllPermissionsGranted) {
+    if (locationPermissions.allPermissionsGranted && locationPermissions.allPermissionsGranted != lastAllPermissionsGranted) {
         if (!isLocationEnabled(locationManager)) {
             // Open change gps setting activity
             context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
