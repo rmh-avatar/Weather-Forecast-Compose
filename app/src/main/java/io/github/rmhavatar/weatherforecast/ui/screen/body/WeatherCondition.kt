@@ -34,17 +34,17 @@ fun WeatherCondition(humidity: String, pressure: String, windSpeed: String) {
         ) {
             WeatherConditionItem(
                 icon = R.drawable.ic_hygrometer,
-                title = "$humidity %",
+                title = stringResource(R.string.humidity_measure, humidity),
                 subtitle = stringResource(R.string.humidity)
             )
             WeatherConditionItem(
                 icon = R.drawable.ic_pressure,
-                title = "$pressure hPa",
+                title = stringResource(R.string.pressure_measure, pressure),
                 subtitle = stringResource(R.string.pressure)
             )
             WeatherConditionItem(
                 icon = R.drawable.ic_wind_speed,
-                title = "${windSpeed}km/h",
+                title = stringResource(R.string.wind_speed_measure, windSpeed),
                 subtitle = stringResource(R.string.wind_speed)
             )
         }
