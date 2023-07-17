@@ -100,6 +100,9 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
+    // Livedata
+    implementation("androidx.compose.runtime:runtime-livedata:1.4.3")
+
     testImplementation("com.squareup.okhttp3:mockwebserver:4.3.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

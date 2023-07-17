@@ -6,4 +6,8 @@ sealed class Screen(
     object Forecast : Screen(
         route = "sections"
     )
+
+    object Search : Screen(
+        route = "search"
+    )
 }
