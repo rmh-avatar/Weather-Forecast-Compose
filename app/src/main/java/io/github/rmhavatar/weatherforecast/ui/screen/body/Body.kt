@@ -1,3 +1,4 @@
+import android.content.res.Configuration
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,6 +26,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +37,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import io.github.rmhavatar.weatherforecast.R
 import io.github.rmhavatar.weatherforecast.data.api.dto.WeatherResponseData
 import io.github.rmhavatar.weatherforecast.data.util.ResponseState
 import io.github.rmhavatar.weatherforecast.ui.screen.body.EmptyState
@@ -48,6 +53,7 @@ fun Body(
     modifier: Modifier = Modifier,
     onShowMessage: (String) -> Unit = {}
 ) {
+    val configuration = LocalConfiguration.current
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         when (weatherDataResponseState) {
             is ResponseState.Error, null -> {
@@ -65,60 +71,146 @@ fun Body(
                 if (weatherDataResponseState.data == null) {
                     EmptyState(Modifier.weight(1f))
                 } else {
-                    with(weatherDataResponseState.data) {
-                        Column(
-                            verticalArrangement = Arrangement.SpaceBetween,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Column(modifier = Modifier.fillMaxWidth()) {
-                                Text(
-                                    text = cityName,
-                                    style = MaterialTheme.typography.titleLarge,
-                                )
-                                Text(
-                                    text = formatDateTime(Date(forecastTime * 1000)),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                )
-                            }
-                            if (weatherCondition.isNotEmpty()) {
-                                AsyncImage(
-                                    model = getWeatherConditionUrl(
-                                        weatherCondition[0].icon
-                                    ),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(164.dp)
-                                )
-                                Text(
-                                    text = weatherCondition[0].condition,
-                                    style = MaterialTheme.typography.titleLarge,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                                Text(
-                                    text = weatherCondition[0].description.replaceFirstChar { character -> character.uppercase() },
-                                    style = MaterialTheme.typography.labelLarge,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                            }
-                            TemperatureText(temperature = temperature.temperature.toInt())
-                            Spacer(modifier = Modifier.height(32.dp))
-                            WeatherCondition(
-                                humidity = temperature.humidity.toString(),
-                                pressure = temperature.pressure.toInt().toString(),
-                                windSpeed = wind.speed.toString()
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            SunsetForecast(
-                                sunRiseTime = sunBehavior.sunrise,
-                                sunSetTime = sunBehavior.sunset
-                            )
+                    when (configuration.orientation) {
+                        Configuration.ORIENTATION_LANDSCAPE -> {
+                            BodyHorizontal(data = weatherDataResponseState.data)
+                        }
+
+                        else -> {
+                            BodyVertical(data = weatherDataResponseState.data)
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun BodyVertical(data: WeatherResponseData) {
+    with(data) {
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = cityName,
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                Text(
+                    text = formatDateTime(Date(forecastTime * 1000)),
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            }
+            if (weatherCondition.isNotEmpty()) {
+                AsyncImage(
+                    model = getWeatherConditionUrl(
+                        weatherCondition[0].icon
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(164.dp)
+                )
+                Text(
+                    text = weatherCondition[0].condition,
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = weatherCondition[0].description.replaceFirstChar { character -> character.uppercase() },
+                    style = MaterialTheme.typography.labelLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            TemperatureText(temperature = temperature.temperature.toInt())
+            Spacer(modifier = Modifier.height(32.dp))
+            WeatherCondition(
+                humidity = temperature.humidity.toString(),
+                pressure = temperature.pressure.toInt().toString(),
+                windSpeed = wind.speed.toString()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            SunsetForecast(
+                sunRiseTime = sunBehavior.sunrise,
+                sunSetTime = sunBehavior.sunset
+            )
+        }
+    }
+}
+
+@Composable
+fun BodyHorizontal(data: WeatherResponseData) {
+    with(data) {
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = cityName,
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                    Text(
+                        text = formatDateTime(Date(forecastTime * 1000)),
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                }
+                if (weatherCondition.isNotEmpty()) {
+                    AsyncImage(
+                        model = getWeatherConditionUrl(
+                            weatherCondition[0].icon
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .defaultMinSize(minWidth = 164.dp, minHeight = 164.dp)
+                    )
+                }
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.Top,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    if (weatherCondition.isNotEmpty()) {
+                        Text(
+                            text = weatherCondition[0].condition,
+                            style = MaterialTheme.typography.titleLarge,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Text(
+                            text = weatherCondition[0].description.replaceFirstChar { character -> character.uppercase() },
+                            style = MaterialTheme.typography.labelLarge,
+                            textAlign = TextAlign.End,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                    TemperatureText(temperature = temperature.temperature.toInt())
+                }
+            }
+            WeatherCondition(
+                humidity = temperature.humidity.toString(),
+                pressure = temperature.pressure.toInt().toString(),
+                windSpeed = wind.speed.toString()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            SunsetForecast(
+                sunRiseTime = sunBehavior.sunrise,
+                sunSetTime = sunBehavior.sunset
+            )
         }
     }
 }
@@ -203,8 +295,8 @@ fun shimmerBrush(targetValue: Float = 1000f): Brush {
 }
 
 @Composable
-fun TemperatureText(temperature: Int) {
-    Row {
+fun TemperatureText(temperature: Int, modifier: Modifier = Modifier) {
+    Row(modifier = modifier) {
         Text(
             text = buildAnnotatedString {
                 append(temperature.toString())
@@ -213,10 +305,10 @@ fun TemperatureText(temperature: Int) {
                         baselineShift = BaselineShift.Superscript,
                     )
                 ) {
-                    append("°")
+                    append(stringResource(R.string.degree_char))
                 }
                 append(" ")
-                append("F")
+                append(stringResource(R.string.fahrenheit_unit))
             },
             style = MaterialTheme.typography.bodyLarge,
             fontSize = 40.sp,

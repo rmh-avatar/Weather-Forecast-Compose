@@ -7,4 +7,6 @@
     <string name="sunrise">Sunrise</string>
     <string name="sunset">Sunset</string>
     <string name="search_your_city">Search your city</string>
+    <string name="fahrenheit_unit">F</string>
+    <string name="degree_char">°</string>
 </resources>
