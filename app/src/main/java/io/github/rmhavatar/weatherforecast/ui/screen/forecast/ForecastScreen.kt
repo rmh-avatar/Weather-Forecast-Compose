@@ -1,3 +1,6 @@
+package io.github.rmhavatar.weatherforecast.ui.screen.forecast
+
+import Body
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -23,13 +26,14 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import io.github.rmhavatar.weatherforecast.R
+import io.github.rmhavatar.weatherforecast.Screen
 import io.github.rmhavatar.weatherforecast.data.receiver.GpsReceiver
-import io.github.rmhavatar.weatherforecast.ui.screen.ForecastViewModel
-import io.github.rmhavatar.weatherforecast.ui.screen.footer.Footer
-import io.github.rmhavatar.weatherforecast.ui.screen.header.Header
+import io.github.rmhavatar.weatherforecast.ui.screen.forecast.footer.Footer
+import io.github.rmhavatar.weatherforecast.ui.screen.forecast.header.Header
 import io.github.rmhavatar.weatherforecast.util.connectivity.base.IConnectivityProvider
 import io.github.rmhavatar.weatherforecast.util.connectivity.hasInternet
 import io.github.rmhavatar.weatherforecast.util.isLocationEnabled
@@ -38,7 +42,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ForecastScreen(hostState: SnackbarHostState, viewModel: ForecastViewModel = hiltViewModel()) {
+fun ForecastScreen(
+    navController: NavController,
+    hostState: SnackbarHostState,
+    viewModel: ForecastViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val connectivityProvider: IConnectivityProvider = IConnectivityProvider.createProvider(context)
@@ -94,19 +102,22 @@ fun ForecastScreen(hostState: SnackbarHostState, viewModel: ForecastViewModel = 
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
-            Header(searchText = searchText) { text ->
-                searchText = text
-                if (connectivityProvider.getNetworkState().hasInternet()) {
-                    viewModel.fetchWeatherDataByCityName(searchText)
-                } else {
-                    showNoInternetMessage(
-                        context = context,
-                        coroutineScope = coroutineScope,
-                        hostState = hostState
-                    )
-                }
+            Header(
+                searchText = searchText,
+                onValueChange = { text ->
+                    searchText = text
+                    if (connectivityProvider.getNetworkState().hasInternet()) {
+                        viewModel.fetchWeatherDataByCityName(searchText)
+                    } else {
+                        showNoInternetMessage(
+                            context = context,
+                            coroutineScope = coroutineScope,
+                            hostState = hostState
+                        )
+                    }
 
-            }
+                },
+                onNavigateToSearch = { navController.navigate(Screen.Search.route) })
             Body(
                 weatherDataResponseState = weatherDataResponseState,
                 modifier = Modifier.weight(1f)

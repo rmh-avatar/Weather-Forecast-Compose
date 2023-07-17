@@ -1,20 +1,24 @@
-package io.github.rmhavatar.weatherforecast.ui.screen
+package io.github.rmhavatar.weatherforecast.ui.screen.forecast
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.rmhavatar.weatherforecast.data.api.dto.WeatherResponseData
+import io.github.rmhavatar.weatherforecast.data.db.entity.SearchEntity
 import io.github.rmhavatar.weatherforecast.data.prefDataStore.DataStoreManager
 import io.github.rmhavatar.weatherforecast.data.repository.ForecastRepository
+import io.github.rmhavatar.weatherforecast.data.repository.ISearchHistoricRepository
 import io.github.rmhavatar.weatherforecast.data.util.ResponseState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class ForecastViewModel @Inject constructor(
     private val forecastRepository: ForecastRepository,
+    private val searchHistoricRepository: ISearchHistoricRepository,
     private val dataStoreManager: DataStoreManager
 ) :
     ViewModel() {
@@ -33,6 +37,13 @@ class ForecastViewModel @Inject constructor(
                 if (hasLocationPermission) {
                     forecastRepository.fetchWeatherDataByCoordinates().collect {
                         if (it.data?.cityName?.isNotBlank() == true) {
+                            searchHistoricRepository.insert(
+                                SearchEntity(
+                                    0,
+                                    it.data.cityName,
+                                    Date()
+                                )
+                            )
                             dataStoreManager.saveLastSearchedCityNameToDataStore(it.data.cityName)
                         }
                         _weatherDataFlow.value = it
@@ -59,6 +70,7 @@ class ForecastViewModel @Inject constructor(
             try {
                 _weatherDataFlow.value = ResponseState.Loading()
                 forecastRepository.fetchWeatherDataByCityName(cityName).collect {
+                    searchHistoricRepository.insert(SearchEntity(0, cityName, Date()))
                     dataStoreManager.saveLastSearchedCityNameToDataStore(cityName)
                     _weatherDataFlow.value = it
                 }
@@ -74,6 +86,7 @@ class ForecastViewModel @Inject constructor(
                 _weatherDataFlow.value = ResponseState.Loading()
                 forecastRepository.fetchWeatherDataByCoordinates().collect {
                     if (it.data?.cityName?.isNotBlank() == true) {
+                        searchHistoricRepository.insert(SearchEntity(0, it.data.cityName, Date()))
                         dataStoreManager.saveLastSearchedCityNameToDataStore(it.data.cityName)
                     }
                     _weatherDataFlow.value = it

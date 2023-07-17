@@ -1,4 +1,4 @@
-package io.github.rmhavatar.weatherforecast.ui.screen.body
+package io.github.rmhavatar.weatherforecast.ui.screen.forecast.body
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

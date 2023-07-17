@@ -1,4 +1,4 @@
-package io.github.rmhavatar.weatherforecast.ui.screen.header
+package io.github.rmhavatar.weatherforecast.ui.screen.forecast.header
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -9,9 +9,10 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ import io.github.rmhavatar.weatherforecast.R
 fun Header(
     searchText: String,
     onValueChange: (String) -> Unit,
+    onNavigateToSearch: () -> Unit = {}
 ) {
     Spacer(modifier = Modifier.height(16.dp))
     Row(
@@ -45,10 +47,13 @@ fun Header(
             onValueChange = onValueChange,
             modifier = Modifier.weight(1f)
         )
+        IconButton(onClick = onNavigateToSearch) {
+            Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
+        }
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchBar(
     value: String,
