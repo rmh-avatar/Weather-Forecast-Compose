@@ -78,6 +78,9 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:3.8.0")
 
+    // GMS - Google Mobile Services
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
     testImplementation("com.squareup.okhttp3:mockwebserver:4.3.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
