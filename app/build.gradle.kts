@@ -81,6 +81,10 @@ dependencies {
     // GMS - Google Mobile Services
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.6.0")
+
+
     testImplementation("com.squareup.okhttp3:mockwebserver:4.3.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
