@@ -6,12 +6,12 @@ import java.util.Date;
 
 public class DateConverter {
     @TypeConverter
-    Date fromTimestamp(Long timestamp) {
+    public Date fromTimestamp(Long timestamp) {
         return new Date(timestamp);
     }
 
     @TypeConverter
-    Long toTimestamp(Date date) {
+    public Long toTimestamp(Date date) {
         return date.getTime();
     }
 }

@@ -2,7 +2,7 @@ package io.github.rmhavatar.weatherforecast.data.repository;
 
 import androidx.lifecycle.LiveData;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -25,7 +25,7 @@ public class SearchHistoricRepository implements ISearchHistoricRepository {
     }
 
     @Override
-    public LiveData<ArrayList<SearchEntity>> getAllSearch() {
+    public LiveData<List<SearchEntity>> getAllSearch() {
         return searchDao.getAllSearch();
     }
 }

@@ -9,11 +9,8 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val searchHistoricRepository: ISearchHistoricRepository) :
+class SearchViewModel @Inject constructor(searchHistoricRepository: ISearchHistoricRepository) :
     ViewModel() {
-    val allSearches: LiveData<ArrayList<SearchEntity>>? = searchHistoricRepository.allSearch
+    val allSearches: LiveData<List<SearchEntity>>? = searchHistoricRepository.allSearch
 
-    fun insert(searchEntity: SearchEntity) {
-        searchHistoricRepository.insert(searchEntity)
-    }
 }

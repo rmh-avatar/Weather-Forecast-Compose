@@ -22,7 +22,7 @@ fun WeatherForecastNavHost(
         modifier = modifier
     ) {
         composable(Screen.Forecast.route) {
-            ForecastScreen(hostState = hostState)
+            ForecastScreen(navController, hostState = hostState)
         }
         composable(Screen.Search.route) {
             SearchScreen(navController)
