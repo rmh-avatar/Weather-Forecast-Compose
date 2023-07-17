@@ -27,9 +27,9 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import io.github.rmhavatar.weatherforecast.R
 import io.github.rmhavatar.weatherforecast.data.receiver.GpsReceiver
-import io.github.rmhavatar.weatherforecast.ui.screen.Footer
 import io.github.rmhavatar.weatherforecast.ui.screen.ForecastViewModel
-import io.github.rmhavatar.weatherforecast.ui.screen.Header
+import io.github.rmhavatar.weatherforecast.ui.screen.footer.Footer
+import io.github.rmhavatar.weatherforecast.ui.screen.header.Header
 import io.github.rmhavatar.weatherforecast.util.connectivity.base.IConnectivityProvider
 import io.github.rmhavatar.weatherforecast.util.connectivity.hasInternet
 import io.github.rmhavatar.weatherforecast.util.isLocationEnabled
