@@ -7,18 +7,16 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.github.rmhavatar.weatherforecast.data.api.IWebService
 import io.github.rmhavatar.weatherforecast.data.api.WebService
 import io.github.rmhavatar.weatherforecast.data.location.DefaultLocationTracker
 import io.github.rmhavatar.weatherforecast.data.location.LocationTracker
+import io.github.rmhavatar.weatherforecast.data.prefDataStore.DataStoreManager
+import io.github.rmhavatar.weatherforecast.data.repository.ForecastRepository
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    @Provides
-    @Singleton
-    fun providesWebService(): IWebService = WebService.invoke()
 
     @Provides
     @Singleton
@@ -36,4 +34,20 @@ object AppModule {
         fusedLocationProviderClient = fusedLocationProviderClient,
         application = application
     )
+
+    @Provides
+    @Singleton
+    fun providesDataStoreManager(application: Application): DataStoreManager =
+        DataStoreManager(application)
+
+    @Provides
+    @Singleton
+    fun providesWebService(): WebService = WebService.invoke()
+
+    @Provides
+    @Singleton
+    fun providesForecastRepository(
+        webService: WebService,
+        locationTracker: LocationTracker
+    ): ForecastRepository = ForecastRepository(webService, locationTracker)
 }
