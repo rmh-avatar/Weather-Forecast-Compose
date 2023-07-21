@@ -13,6 +13,7 @@ import io.github.rmhavatar.weatherforecast.data.db.db.AppDatabase
 import io.github.rmhavatar.weatherforecast.data.location.DefaultLocationTracker
 import io.github.rmhavatar.weatherforecast.data.location.LocationTracker
 import io.github.rmhavatar.weatherforecast.data.prefDataStore.DataStoreManager
+import io.github.rmhavatar.weatherforecast.data.prefDataStore.IDataStore
 import io.github.rmhavatar.weatherforecast.data.repository.ForecastRepository
 import io.github.rmhavatar.weatherforecast.data.repository.IForecastRepository
 import io.github.rmhavatar.weatherforecast.data.repository.ISearchHistoricRepository
@@ -42,7 +43,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesDataStoreManager(application: Application): DataStoreManager =
+    fun providesDataStoreManager(application: Application): IDataStore =
         DataStoreManager(application)
 
     @Provides
@@ -59,7 +60,6 @@ object AppModule {
     ): IForecastRepository = ForecastRepository(webService, locationTracker)
 
     @Provides
-    @Singleton
     fun providesSearchRepository(
         appDatabase: AppDatabase
     ): ISearchHistoricRepository = SearchHistoricRepository(appDatabase)
