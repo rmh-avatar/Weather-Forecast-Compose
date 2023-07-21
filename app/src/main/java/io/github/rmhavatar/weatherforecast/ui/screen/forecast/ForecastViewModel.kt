@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.rmhavatar.weatherforecast.data.api.dto.WeatherResponseData
 import io.github.rmhavatar.weatherforecast.data.db.entity.SearchEntity
-import io.github.rmhavatar.weatherforecast.data.prefDataStore.DataStoreManager
+import io.github.rmhavatar.weatherforecast.data.repository.IDataStoreRepository
 import io.github.rmhavatar.weatherforecast.data.repository.IForecastRepository
 import io.github.rmhavatar.weatherforecast.data.repository.ISearchHistoricRepository
 import io.github.rmhavatar.weatherforecast.data.util.ResponseState
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class ForecastViewModel @Inject constructor(
     private val forecastRepository: IForecastRepository,
     private val searchHistoricRepository: ISearchHistoricRepository,
-    private val dataStoreManager: DataStoreManager
+    private val dataStoreRepository: IDataStoreRepository
 ) :
     ViewModel() {
     private val _weatherDataFlow: MutableStateFlow<ResponseState<WeatherResponseData>?> =
@@ -44,12 +44,12 @@ class ForecastViewModel @Inject constructor(
                                     Date()
                                 )
                             )
-                            dataStoreManager.saveLastSearchedCityNameToDataStore(it.data.cityName)
+                            dataStoreRepository.saveLastSearchedCityNameToDataStore(it.data.cityName)
                         }
                         _weatherDataFlow.value = it
                     }
                 } else {
-                    dataStoreManager.getLastSearchedCityNameFromDataStore().collect { cityName ->
+                    dataStoreRepository.getLastSearchedCityNameFromDataStore().collect { cityName ->
                         if (cityName.isNullOrBlank()) {
                             _weatherDataFlow.value = null
                         } else {
@@ -77,7 +77,7 @@ class ForecastViewModel @Inject constructor(
                             Date()
                         )
                     )
-                    dataStoreManager.saveLastSearchedCityNameToDataStore(cityName)
+                    dataStoreRepository.saveLastSearchedCityNameToDataStore(cityName)
                     _weatherDataFlow.value = it
                 }
             } catch (e: Exception) {
@@ -97,7 +97,7 @@ class ForecastViewModel @Inject constructor(
                                 it.data.cityName.hashCode().toLong(), it.data.cityName, Date()
                             )
                         )
-                        dataStoreManager.saveLastSearchedCityNameToDataStore(it.data.cityName)
+                        dataStoreRepository.saveLastSearchedCityNameToDataStore(it.data.cityName)
                     }
                     _weatherDataFlow.value = it
                 }
