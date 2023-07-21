@@ -8,9 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-class ForecastRepository @Inject constructor(
+class ForecastRepository(
     private val webService: IWebService,
     private val locationTracker: LocationTracker
 ) : IForecastRepository {
