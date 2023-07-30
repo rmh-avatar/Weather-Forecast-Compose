@@ -3,6 +3,7 @@ package io.github.rmhavatar.weatherforecast.data.di
 import android.app.Application
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +21,11 @@ import io.github.rmhavatar.weatherforecast.data.repository.IDataStoreRepository
 import io.github.rmhavatar.weatherforecast.data.repository.IForecastRepository
 import io.github.rmhavatar.weatherforecast.data.repository.ISearchHistoricRepository
 import io.github.rmhavatar.weatherforecast.data.repository.SearchHistoricRepository
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -49,7 +55,25 @@ object AppModule {
         DataStoreManager(application)
 
     @Provides
-    fun providesWebService(): IWebService = WebService.invoke()
+    @Singleton
+    fun providesRetrofit(): Retrofit {
+        val okHttpClient = HttpLoggingInterceptor().run {
+            level = HttpLoggingInterceptor.Level.BODY
+            OkHttpClient.Builder()
+                .addInterceptor(this)
+                .connectTimeout(60L, TimeUnit.SECONDS)
+                .build()
+        }
+
+        return Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org")
+            .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().build()))
+            .build()
+    }
+
+    @Provides
+    fun providesWebService(retrofit: Retrofit): IWebService = WebService(retrofit)
 
     @Provides
     fun providesDatabase(application: Application): AppDatabase =
