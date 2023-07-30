@@ -10,7 +10,6 @@ import org.junit.Test
 
 class DataStoreRepositoryTest {
     private val lastCity = "Atlanta"
-    private lateinit var dataStore: FakeDataStore
 
     // Class under test
     private lateinit var dataStoreRepository: DataStoreRepository
@@ -18,8 +17,7 @@ class DataStoreRepositoryTest {
 
     @Before
     fun createRepository() {
-        dataStore = FakeDataStore()
-        dataStoreRepository = DataStoreRepository(dataStore = dataStore)
+        dataStoreRepository = DataStoreRepository(dataStore = FakeDataStore())
     }
 
     @Test
