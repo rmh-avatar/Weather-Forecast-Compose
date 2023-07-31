@@ -1,4 +1,4 @@
-package io.github.rmhavatar.weatherforecast.data.repository
+package io.github.rmhavatar.weatherforecast.data.repository.forecast
 
 import io.github.rmhavatar.weatherforecast.data.api.IWebService
 import io.github.rmhavatar.weatherforecast.data.api.dto.WeatherResponseData

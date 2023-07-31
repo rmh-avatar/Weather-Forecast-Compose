@@ -1,4 +1,4 @@
-package io.github.rmhavatar.weatherforecast.data.repository;
+package io.github.rmhavatar.weatherforecast.data.repository.search_historic;
 
 import androidx.lifecycle.LiveData;
 

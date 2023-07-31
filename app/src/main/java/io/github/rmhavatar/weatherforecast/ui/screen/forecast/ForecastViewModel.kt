@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.rmhavatar.weatherforecast.data.api.dto.WeatherResponseData
 import io.github.rmhavatar.weatherforecast.data.db.entity.SearchEntity
-import io.github.rmhavatar.weatherforecast.data.repository.IDataStoreRepository
-import io.github.rmhavatar.weatherforecast.data.repository.IForecastRepository
-import io.github.rmhavatar.weatherforecast.data.repository.ISearchHistoricRepository
+import io.github.rmhavatar.weatherforecast.data.repository.datastore.IDataStoreRepository
+import io.github.rmhavatar.weatherforecast.data.repository.forecast.IForecastRepository
+import io.github.rmhavatar.weatherforecast.data.repository.search_historic.ISearchHistoricRepository
 import io.github.rmhavatar.weatherforecast.data.util.ResponseState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

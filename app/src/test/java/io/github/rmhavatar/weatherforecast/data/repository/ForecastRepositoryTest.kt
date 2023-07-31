@@ -8,6 +8,7 @@ import io.github.rmhavatar.weatherforecast.data.api.WebService.Companion.SERVER_
 import io.github.rmhavatar.weatherforecast.data.api.WebService.Companion.UNEXPECTED_ERROR_ERROR_MESSAGE
 import io.github.rmhavatar.weatherforecast.data.api.enqueueResponse
 import io.github.rmhavatar.weatherforecast.data.location.LocationTracker
+import io.github.rmhavatar.weatherforecast.data.repository.forecast.ForecastRepository
 import io.github.rmhavatar.weatherforecast.data.util.ResponseState
 import junit.framework.TestCase.assertNotNull
 import kotlinx.coroutines.test.runTest

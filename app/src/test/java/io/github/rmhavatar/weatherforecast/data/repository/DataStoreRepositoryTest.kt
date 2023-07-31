@@ -1,5 +1,6 @@
 package io.github.rmhavatar.weatherforecast.data.repository
 
+import io.github.rmhavatar.weatherforecast.data.repository.datastore.DataStoreRepository
 import io.github.rmhavatar.weatherforecast.data.source.FakeDataStore
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat

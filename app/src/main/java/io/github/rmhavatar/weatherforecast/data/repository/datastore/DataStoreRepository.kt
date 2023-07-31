@@ -1,4 +1,4 @@
-package io.github.rmhavatar.weatherforecast.data.repository
+package io.github.rmhavatar.weatherforecast.data.repository.datastore
 
 import io.github.rmhavatar.weatherforecast.data.prefDataStore.IDataStore
 import kotlinx.coroutines.flow.Flow
