@@ -1,4 +1,4 @@
-package io.github.rmhavatar.weatherforecast.data.di
+package io.github.rmhavatar.weatherforecast.di
 
 import android.app.Application
 import com.google.android.gms.location.FusedLocationProviderClient
