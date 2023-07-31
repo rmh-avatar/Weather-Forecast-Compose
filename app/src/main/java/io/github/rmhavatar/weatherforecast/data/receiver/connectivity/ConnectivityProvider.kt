@@ -1,12 +1,12 @@
-package io.github.rmhavatar.weatherforecast.util.connectivity
+package io.github.rmhavatar.weatherforecast.data.receiver.connectivity
 
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import io.github.rmhavatar.weatherforecast.util.connectivity.base.ConnectivityProviderBaseImpl
-import io.github.rmhavatar.weatherforecast.util.connectivity.base.IConnectivityProvider.NetworkState
-import io.github.rmhavatar.weatherforecast.util.connectivity.base.IConnectivityProvider.NetworkState.ConnectedState
-import io.github.rmhavatar.weatherforecast.util.connectivity.base.IConnectivityProvider.NetworkState.NotConnectedState
+import io.github.rmhavatar.weatherforecast.data.receiver.connectivity.base.ConnectivityProviderBaseImpl
+import io.github.rmhavatar.weatherforecast.data.receiver.connectivity.base.IConnectivityProvider.NetworkState
+import io.github.rmhavatar.weatherforecast.data.receiver.connectivity.base.IConnectivityProvider.NetworkState.ConnectedState
+import io.github.rmhavatar.weatherforecast.data.receiver.connectivity.base.IConnectivityProvider.NetworkState.NotConnectedState
 
 class ConnectivityProvider(private val cm: ConnectivityManager) :
     ConnectivityProviderBaseImpl() {

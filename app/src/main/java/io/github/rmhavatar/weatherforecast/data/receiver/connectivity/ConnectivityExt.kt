@@ -1,6 +1,6 @@
-package io.github.rmhavatar.weatherforecast.util.connectivity
+package io.github.rmhavatar.weatherforecast.data.receiver.connectivity
 
-import io.github.rmhavatar.weatherforecast.util.connectivity.base.IConnectivityProvider
+import io.github.rmhavatar.weatherforecast.data.receiver.connectivity.base.IConnectivityProvider
 
 /**
  * Detect if device has internet connexion
