@@ -22,6 +22,6 @@
 | DB | Room |
 | Concurrency | Kotlin Coroutines, LiveData |
 | Dependency Injection | Hilt |
-| Unit test | JUnit, [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver)
+| Unit test | JUnit, [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver), [Mockito-Kotlin](https://github.com/mockito/mockito-kotlin)
 | Preferences | DataStore |
 | Image Manager | Coil |
