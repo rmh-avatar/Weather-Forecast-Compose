@@ -32,10 +32,10 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import io.github.rmhavatar.weatherforecast.R
 import io.github.rmhavatar.weatherforecast.Screen
 import io.github.rmhavatar.weatherforecast.data.receiver.GpsReceiver
+import io.github.rmhavatar.weatherforecast.data.receiver.connectivity.base.IConnectivityProvider
+import io.github.rmhavatar.weatherforecast.data.receiver.connectivity.hasInternet
 import io.github.rmhavatar.weatherforecast.ui.screen.forecast.footer.Footer
 import io.github.rmhavatar.weatherforecast.ui.screen.forecast.header.Header
-import io.github.rmhavatar.weatherforecast.util.connectivity.base.IConnectivityProvider
-import io.github.rmhavatar.weatherforecast.util.connectivity.hasInternet
 import io.github.rmhavatar.weatherforecast.util.isLocationEnabled
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

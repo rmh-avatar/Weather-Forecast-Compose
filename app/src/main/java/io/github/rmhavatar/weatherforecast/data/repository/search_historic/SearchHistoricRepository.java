@@ -1,10 +1,8 @@
-package io.github.rmhavatar.weatherforecast.data.repository;
+package io.github.rmhavatar.weatherforecast.data.repository.search_historic;
 
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import io.github.rmhavatar.weatherforecast.data.db.dao.SearchDao;
 import io.github.rmhavatar.weatherforecast.data.db.db.AppDatabase;
@@ -12,8 +10,6 @@ import io.github.rmhavatar.weatherforecast.data.db.entity.SearchEntity;
 
 public class SearchHistoricRepository implements ISearchHistoricRepository {
     private final SearchDao searchDao;
-
-    @Inject
 
     public SearchHistoricRepository(AppDatabase database) {
         searchDao = database.searchDao();

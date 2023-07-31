@@ -1,4 +1,4 @@
-package io.github.rmhavatar.weatherforecast.util.connectivity.base
+package io.github.rmhavatar.weatherforecast.data.receiver.connectivity.base
 
 import android.os.Handler
 import android.os.Looper

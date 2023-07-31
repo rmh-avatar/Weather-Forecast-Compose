@@ -1,11 +1,11 @@
-package io.github.rmhavatar.weatherforecast.util.connectivity.base
+package io.github.rmhavatar.weatherforecast.data.receiver.connectivity.base
 
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
-import io.github.rmhavatar.weatherforecast.util.connectivity.ConnectivityProvider
+import io.github.rmhavatar.weatherforecast.data.receiver.connectivity.ConnectivityProvider
 
 /**
  * Detect device network state

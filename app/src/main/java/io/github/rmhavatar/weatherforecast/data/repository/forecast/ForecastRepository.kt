@@ -1,4 +1,4 @@
-package io.github.rmhavatar.weatherforecast.data.repository
+package io.github.rmhavatar.weatherforecast.data.repository.forecast
 
 import io.github.rmhavatar.weatherforecast.data.api.IWebService
 import io.github.rmhavatar.weatherforecast.data.api.dto.WeatherResponseData
@@ -8,9 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-class ForecastRepository @Inject constructor(
+class ForecastRepository(
     private val webService: IWebService,
     private val locationTracker: LocationTracker
 ) : IForecastRepository {
