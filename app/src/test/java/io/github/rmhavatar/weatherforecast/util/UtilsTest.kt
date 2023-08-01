@@ -4,7 +4,7 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import java.util.Date
 
-class UtilsKtTest {
+class UtilsTest {
 
     @Test
     fun formatTime_get24hoursFormat_return12hoursFormat() {
