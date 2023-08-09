@@ -72,7 +72,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.1.1")
-    testImplementation("junit:junit:4.12")
 
     // Hilt
     val hiltVersion = "2.45"
@@ -114,6 +113,7 @@ dependencies {
     // Livedata
     implementation("androidx.compose.runtime:runtime-livedata:1.4.3")
 
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.3.1")
