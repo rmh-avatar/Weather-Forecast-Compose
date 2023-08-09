@@ -1,11 +1,14 @@
 package io.github.rmhavatar.weatherforecast.ui.screen.forecast
 
 import Body
+import android.app.Activity.RESULT_OK
 import android.content.Context
-import android.content.Intent
 import android.content.IntentFilter
+import android.content.IntentSender
 import android.location.LocationManager
-import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -29,6 +32,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationRequest.Builder.IMPLICIT_MIN_UPDATE_INTERVAL
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.Priority
+import com.google.android.gms.location.SettingsClient
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import io.github.rmhavatar.weatherforecast.R
 import io.github.rmhavatar.weatherforecast.Screen
 import io.github.rmhavatar.weatherforecast.data.receiver.GpsReceiver
@@ -54,6 +68,23 @@ fun ForecastScreen(
     val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
     val coroutineScope = rememberCoroutineScope()
+    val showActivateGpsDialogLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartIntentSenderForResult(),
+        onResult = { intent ->
+            if (intent.resultCode == RESULT_OK) {
+                if (connectivityProvider.getNetworkState().hasInternet()) {
+                    viewModel.fetchWeatherDataByCoordinates()
+                } else {
+                    showNoInternetMessage(
+                        context = context,
+                        coroutineScope = coroutineScope,
+                        hostState = hostState
+                    )
+                }
+            }
+        }
+    )
+
     val locationPermissions = rememberMultiplePermissionsState(
         permissions = listOf(
             android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -80,6 +111,32 @@ fun ForecastScreen(
                 R.drawable.baseline_location_off_24
             }
         )
+    }
+
+    val onSuccessListener: OnSuccessListener<LocationSettingsResponse> = OnSuccessListener {
+        if (connectivityProvider.getNetworkState().hasInternet()) {
+            lastAllPermissionsGranted = locationPermissions.allPermissionsGranted
+            viewModel.fetchWeatherDataByCoordinates()
+        } else {
+            showNoInternetMessage(
+                context = context,
+                coroutineScope = coroutineScope,
+                hostState = hostState
+            )
+        }
+    }
+
+    val onFailureListener = OnFailureListener { exception ->
+        if (exception is ResolvableApiException) {
+            // Location settings are not satisfied, but this can be fixed
+            // by showing the user a dialog.
+            try {
+                showActivateGpsDialogLauncher.launch(
+                    IntentSenderRequest.Builder(exception.resolution.intentSender).build()
+                )
+            } catch (_: IntentSender.SendIntentException) {
+            }
+        }
     }
 
     // Receiver to know gps status
@@ -132,7 +189,11 @@ fun ForecastScreen(
             Footer(gpsIcon = gpsIcon) {
                 if (locationPermissions.allPermissionsGranted) {
                     if (!isLocationEnabled(locationManager)) {
-                        context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                        checkLocationSettings(
+                            context = context,
+                            onSuccessListener = onSuccessListener,
+                            onFailureListener = onFailureListener
+                        )
                     } else if (connectivityProvider.getNetworkState().hasInternet()) {
                         viewModel.fetchWeatherDataByCoordinates()
                     } else {
@@ -183,19 +244,11 @@ fun ForecastScreen(
 
     // If location permission is granted is not first time app is launched, fetch weather data from location
     if (locationPermissions.allPermissionsGranted && locationPermissions.allPermissionsGranted != lastAllPermissionsGranted) {
-        if (!isLocationEnabled(locationManager)) {
-            // Open change gps setting activity
-            context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-        } else if (connectivityProvider.getNetworkState().hasInternet()) {
-            lastAllPermissionsGranted = locationPermissions.allPermissionsGranted
-            viewModel.fetchWeatherDataByCoordinates()
-        } else {
-            showNoInternetMessage(
-                context = context,
-                coroutineScope = coroutineScope,
-                hostState = hostState
-            )
-        }
+        checkLocationSettings(
+            context = context,
+            onSuccessListener = onSuccessListener,
+            onFailureListener = onFailureListener
+        )
     }
 }
 
@@ -218,4 +271,24 @@ private fun showNoInternetMessage(
         coroutineScope, hostState,
         context.getString(R.string.no_internet_check_your_network_connexion)
     )
+}
+
+private fun checkLocationSettings(
+    context: Context,
+    onSuccessListener: OnSuccessListener<LocationSettingsResponse>,
+    onFailureListener: OnFailureListener
+) {
+    val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+        .setMinUpdateIntervalMillis(IMPLICIT_MIN_UPDATE_INTERVAL)
+        .setMaxUpdateDelayMillis(30000)
+        .build()
+
+    val builder = LocationSettingsRequest.Builder()
+        .addLocationRequest(locationRequest)
+
+    val client: SettingsClient = LocationServices.getSettingsClient(context)
+    val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+
+    task.addOnSuccessListener(onSuccessListener)
+    task.addOnFailureListener(onFailureListener)
 }
