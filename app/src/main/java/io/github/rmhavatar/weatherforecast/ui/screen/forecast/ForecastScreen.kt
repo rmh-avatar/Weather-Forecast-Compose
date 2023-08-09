@@ -155,7 +155,7 @@ fun ForecastScreen(
     // onDispose in DisposableEffect
     DisposableEffect(key1 = lifecycleOwner) {
         onDispose {
-            // It needed because it should not be a receiver that is not listen to any f
+            // It needed because it should not be a receiver that is not listen to any event
             context.unregisterReceiver(gpsReceiver)
         }
     }
