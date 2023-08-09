@@ -12,7 +12,7 @@ class FakeDataStore : IDataStore {
 
     override fun getLastSearchedCityNameFromDataStore(): Flow<String?> {
         return flow {
-            lastCity
+            emit(lastCity)
         }
     }
 }
